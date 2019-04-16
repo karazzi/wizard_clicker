@@ -56,6 +56,7 @@ var gameData = {
   },
 };
 
+
 for (var item in gameData.items) {
   const it = gameData.items[item].production();
   console.log(it);
