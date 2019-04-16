@@ -56,6 +56,15 @@ var gameData = {
   },
 };
 
+function initUI() {
+  for (const obj in gameData.items) {
+    var price = gameData.items[obj].costNext();
+    var owned = gameData.items[obj].owned;
+    updateButton(obj, price, owned);
+  }
+}
+
+window.onload = initUI;
 
 for (var item in gameData.items) {
   const it = gameData.items[item].production();
@@ -65,6 +74,13 @@ for (var item in gameData.items) {
 function gainMana() {
   gameData.mana += gameData.manaPerClick;
   updateMana();
+}
+
+function autoMana() {
+  for (const obj in gameData.items) {
+    gameData.mana += gameData.items[obj].production();
+    updateMana();
+  }
 }
 
 function buyItem(obj) {
@@ -78,7 +94,7 @@ function buyItem(obj) {
 }
 
 function updateMana() {
-  document.getElementById("manaGained").innerHTML = "Mana: " + gameData.mana;
+  document.getElementById("manaGained").innerHTML = "Mana: " + gameData.mana.toFixed(2);
 }
 
 function updateButton(obj, price, owned) {
