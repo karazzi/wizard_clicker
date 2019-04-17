@@ -1,7 +1,10 @@
+
+
 var gameData = {
-  mana: 0,
+  mana: null,
   manaPerClick: 1,
   multiplier: 1,
+  lastSaved: '',
   items: {
     spells: {
       owned: 0,
@@ -9,9 +12,9 @@ var gameData = {
       coefficient: 1.07,
       iniTime: 0.6,
       iniRevenue: 1,
-      costNext: function() {return (this.baseCost * Math.pow(this.coefficient, this.owned))},
-      productivity: function() {return (this.iniRevenue/this.iniTime);},
-      production: function() {return (this.owned * this.productivity())},
+      costNext: 4,
+      productivity: 0,
+      production: 0,
     },
     wands: {
       owned: 0,
@@ -19,9 +22,9 @@ var gameData = {
       coefficient: 1.15,
       iniTime: 3,
       iniRevenue: 60,
-      costNext: function() {return (this.baseCost * Math.pow(this.coefficient, this.owned))},
-      productivity: function() {return (this.iniRevenue/this.iniTime);},
-      production: function() {return (this.owned * this.productivity())},
+      costNext: 60,
+      productivity: 0,
+      production: 0,
     },
     wizards: {
       owned: 0,
@@ -29,9 +32,9 @@ var gameData = {
       coefficient: 1.14,
       iniTime: 6,
       iniRevenue: 540,
-      costNext: function() {return (this.baseCost * Math.pow(this.coefficient, this.owned))},
-      productivity: function() {return (this.iniRevenue/this.iniTime);},
-      production: function() {return (this.owned * this.productivity())},
+      costNext: 720,
+      productivity: 0,
+      production: 0,
     },
     professors: {
       owned: 0,
@@ -39,9 +42,9 @@ var gameData = {
       coefficient: 1.13,
       iniTime: 12,
       iniRevenue: 4320,
-      costNext: function() {return (this.baseCost * Math.pow(this.coefficient, this.owned))},
-      productivity: function() {return (this.iniRevenue/this.iniTime);},
-      production: function() {return (this.owned * this.productivity())},
+      costNext: 8640,
+      productivity: 0,
+      production: 0,
     },
     schools: {
       owned: 0,
@@ -49,12 +52,14 @@ var gameData = {
       coefficient: 1.12,
       iniTime: 24,
       iniRevenue: 51840,
-      costNext: function() {return (this.baseCost * Math.pow(this.coefficient, this.owned))},
-      productivity: function() {return (this.iniRevenue/this.iniTime);},
-      production: function() {return (this.owned * this.productivity())},
+      costNext: 103680,
+      productivity: 0,
+      production: 0,
     },
   },
 };
+
+// console.log(savegame);
 
 window.onload = initUI;
 
@@ -62,16 +67,29 @@ window.setInterval(function(){
   autoMana();
 }, 1000)
 
+var saveGameLoop = window.setInterval(function() {
+  var d = new Date();
+  gameData.lastSaved = d.toString();
+  localStorage.setItem('wizardClickerSave', JSON.stringify(gameData));
+  document.getElementById("lastSaved").innerHTML = "<small>Last saved: " + gameData.lastSaved + "</small>";
+}, 15000)
+
 function initUI() {
+  var savegame = JSON.parse(localStorage.getItem("wizardClickerSave"))
+  if (savegame !== null) {
+    gameData = savegame;
+  }
   for (const obj in gameData.items) {
-    var price = gameData.items[obj].costNext();
+    var price = gameData.items[obj].costNext;
     var owned = gameData.items[obj].owned;
+    document.getElementById("lastSaved").innerHTML = "<small>Last saved: " + gameData.lastSaved + "</small>"
     updateButton(obj, price, owned);
+    updateMana();
   }
 }
 
 for (var item in gameData.items) {
-  const it = gameData.items[item].production();
+  const it = gameData.items[item].production;
   console.log(it);
 }
 
@@ -82,17 +100,20 @@ function gainMana() {
 
 function autoMana() {
   for (const obj in gameData.items) {
-    gameData.mana += gameData.items[obj].production() * gameData.multiplier;
+    gameData.mana += gameData.items[obj].production * gameData.multiplier;
     updateMana();
   }
 }
 
 function buyItem(obj) {
   const item = gameData.items[obj];
-  if(item.costNext() <= gameData.mana) {
-    gameData.mana -= item.costNext();
+  if(item.costNext <= gameData.mana) {
+    gameData.mana -= item.costNext;
     item.owned += 1;
-    updateButton(obj, item.costNext(), item.owned);
+    item.costNext = item.baseCost * Math.pow(item.coefficient, item.owned);
+    item.productivity = item.iniRevenue / item.iniTime;
+    item.production = item.owned * item.productivity;
+    updateButton(obj, item.costNext, item.owned);
   }
   updateMana();
 }
