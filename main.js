@@ -56,6 +56,12 @@ var gameData = {
   },
 };
 
+window.onload = initUI;
+
+window.setInterval(function(){
+  autoMana();
+}, 1000)
+
 function initUI() {
   for (const obj in gameData.items) {
     var price = gameData.items[obj].costNext();
@@ -63,8 +69,6 @@ function initUI() {
     updateButton(obj, price, owned);
   }
 }
-
-window.onload = initUI;
 
 for (var item in gameData.items) {
   const it = gameData.items[item].production();
@@ -78,7 +82,7 @@ function gainMana() {
 
 function autoMana() {
   for (const obj in gameData.items) {
-    gameData.mana += gameData.items[obj].production();
+    gameData.mana += gameData.items[obj].production() * gameData.multiplier;
     updateMana();
   }
 }
@@ -94,13 +98,25 @@ function buyItem(obj) {
 }
 
 function updateMana() {
-  document.getElementById("manaGained").innerHTML = "Mana: " + gameData.mana.toFixed(2);
+  var manaString = "";
+  if (gameData.mana < 1000) {
+    manaString = gameData.mana.toFixed(2);
+  } else {
+    manaString = gameData.mana.toExponential(2);
+  }
+  document.getElementById("manaGained").innerHTML = "Mana: " + manaString;
 }
 
 function updateButton(obj, price, owned) {
   var item = obj.toLowerCase();
   var buyString = item + "Buy";
   var ownString = item + "Owned";
-  document.getElementById(buyString).innerHTML = "Buy " + obj + "<br>Price: " + price.toFixed(1);
+  var priceString = "";
+  if (price < 1000) {
+    priceString = price.toFixed(1);
+  } else {
+    priceString = price.toExponential(1);
+  }
+  document.getElementById(buyString).innerHTML = "Buy " + obj + "<br>Price: " + priceString;
   document.getElementById(ownString).innerHTML = obj + ": " + owned;
 }
