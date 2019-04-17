@@ -74,7 +74,7 @@ var saveGameLoop = window.setInterval(function() {
   gameData.lastSaved = Date.now();
   localStorage.setItem('wizardClickerSave', JSON.stringify(gameData));
   document.getElementById("lastSaved").innerHTML = "<small>Last saved: " + d.toString() + "</small>";
-}, 1000)
+}, 10000)
 
 function initUI() {
   //Initialize gamedata
