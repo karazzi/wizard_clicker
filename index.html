@@ -15,7 +15,7 @@
             <h3>Gather your mana!</h3>
           </div>
           <div class="col-lg-2">
-            <button type="button" class="btn btn-danger" name="button" onclick="resetGame()">Reset game</button>
+            <button type="button" class="btn btn-warning" name="button" onclick="resetGame()">Reset game</button>
           </div>
         </div>
       </div>
@@ -35,14 +35,47 @@
         </div>
         <div class="row">
           <div class="col-lg-2">
-            <button type="button" class="btn btn-info" onclick="buyItem('spells')" id="spellsBuy">Buy Spell</button>
+            <button type="button" class="btn btn-info" onclick="buyItem('spells')" id="spellsBuy">Buy Spells</button>
             <p id="spellsOwned">Spells: 1</p>
+          </div>
+          <div class="col-lg-4">
+            <p id="spellsProduction"></p>
           </div>
         </div>
         <div class="row">
           <div class="col-lg-2">
-            <button type="button" class="btn btn-info" onclick="buyItem('wands')" id="wandsBuy">Buy Wand<br>Price: 60</button>
+            <button type="button" class="btn btn-info" onclick="buyItem('wands')" id="wandsBuy">Buy Wands<br>Price: 60</button>
             <p id="wandsOwned">Wands: 0</p>
+          </div>
+          <div class="col-lg-4">
+            <p id="wandsProduction"></p>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-lg-2">
+            <button type="button" class="btn btn-info" onclick="buyItem('wizards')" id="wizardsBuy">Buy Wizards<br>Price: 60</button>
+            <p id="wizardsOwned">Wizards: 0</p>
+          </div>
+          <div class="col-lg-4">
+            <p id="wizardsProduction"></p>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-lg-2">
+            <button type="button" class="btn btn-info" onclick="buyItem('professors')" id="professorsBuy">Buy Professors<br>Price: 60</button>
+            <p id="professorsOwned">Professors: 0</p>
+          </div>
+          <div class="col-lg-4">
+            <p id="professorsProduction"></p>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-lg-2">
+            <button type="button" class="btn btn-info" onclick="buyItem('schools')" id="schoolsBuy">Buy Schools<br>Price: 60</button>
+            <p id="schoolsOwned">Schools: 0</p>
+          </div>
+          <div class="col-lg-4">
+            <p id="schoolsProduction"></p>
           </div>
         </div>
       </div>
@@ -55,7 +88,26 @@
       </div>
     </div>
 
+    <!-- Modal -->
+    <div id="offlineProdModal" class="modal fade" role="dialog">
+      <div class="modal-dialog">
 
+        <!-- Modal content-->
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+            <!-- <h4 class="modal-title">Offline production</h4> -->
+          </div>
+          <div class="modal-body">
+            <p id="offlineModalBody"></p>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+          </div>
+        </div>
+
+      </div>
+    </div>
 
     <script type="text/javascript" src="main.js" charset="utf-8"></script>
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
