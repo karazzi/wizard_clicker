@@ -139,8 +139,12 @@ function updateButton(obj, price, owned) {
   } else {
     priceString = price.toExponential(1);
   }
-  document.getElementById(buyString).innerHTML = "Buy " + obj + "<br>Price: " + priceString;
-  document.getElementById(ownString).innerHTML = obj + ": " + owned;
+  document.getElementById(buyString).innerHTML = "Buy " + capitalizeFirstLetter(obj) + "<br>Price: " + priceString;
+  document.getElementById(ownString).innerHTML = capitalizeFirstLetter(obj) + ": " + owned;
+}
+
+function capitalizeFirstLetter(string) {
+    return string.charAt(0).toUpperCase() + string.slice(1);
 }
 
 function resetGame() {
