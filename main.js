@@ -4,6 +4,7 @@ function initGameData() {
     mana: null,
     manaPerClick: 1,
     multiplier: 1,
+    offlineMultiplier: 0.5,
     totalProduction: 0,
     lastSaved: '',
     items: {
@@ -88,7 +89,7 @@ function initUI() {
     //Generate mana based on time offline
     var timeDiff = Date.now() - gameData.lastSaved;
     var timeDiffSecs = timeDiff / 1000;
-    var offlineProd = timeDiffSecs * gameData.totalProduction;
+    var offlineProd = timeDiffSecs * gameData.totalProduction * gameData.offlineMultiplier;
     if (offlineProd > 1000) {
       var offProdString = offlineProd.toExponential(2);
     } else {
@@ -165,10 +166,18 @@ function updateButton(obj, price, owned, production) {
   var ownString = item + "Owned";
   var prodString = item + "Production";
   var priceString = "";
+  var productionValue = "";
+
   if (price < 1000) {
     priceString = price.toFixed(1);
   } else {
     priceString = price.toExponential(2);
+  }
+
+  if (production < 1000) {
+    productionValue = production.toFixed(1);
+  } else {
+    productionValue = production.toExponential(2);
   }
 
   if (gameData.mana < price) {
@@ -181,7 +190,7 @@ function updateButton(obj, price, owned, production) {
 
   document.getElementById(buyString).innerHTML = "Buy " + capitalizeFirstLetter(obj) + "<br>Price: " + priceString;
   document.getElementById(ownString).innerHTML = capitalizeFirstLetter(obj) + ": " + owned;
-  document.getElementById(prodString).innerHTML = production.toFixed(2) + " mana/sec";
+  document.getElementById(prodString).innerHTML = productionValue + " mana/sec";
 }
 
 function capitalizeFirstLetter(string) {
